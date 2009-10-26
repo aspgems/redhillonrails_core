@@ -39,7 +39,17 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
     end
 
     def drop_table_with_redhillonrails_core(name, options = {})
-      reverse_foreign_keys(name).each { |foreign_key| remove_foreign_key(foreign_key.table_name, foreign_key.name) }
+      reverse_foreign_keys(name).each do |foreign_key|
+        begin
+          remove_foreign_key(foreign_key.table_name, foreign_key.name)
+        rescue Exception
+          #there is a problem when using rollback if two tables have 
+          #similar names. In that case, the plugin will try to remove a
+          #non-existing column and raise an exception. I rescue the
+          #exception so the migration can proceed	
+          nil
+        end  
+      end
       drop_table_without_redhillonrails_core(name, options)
     end
   end
