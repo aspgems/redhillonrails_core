@@ -31,7 +31,7 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
       foreign_keys = []
 
       results.each do |row|
-        row[1].each do |line|
+        row[1].each_line do |line|
           if line =~ /^  CONSTRAINT [`"](.+?)[`"] FOREIGN KEY \([`"](.+?)[`"]\) REFERENCES [`"](.+?)[`"] \((.+?)\)( ON DELETE (.+?))?( ON UPDATE (.+?))?,?$/
             name = $1
             column_names = $2
