@@ -20,6 +20,10 @@ module RedHillConsulting
       ActiveRecord::ConnectionAdapters::MysqlColumn.send(:include, RedHillConsulting::Core::ActiveRecord::ConnectionAdapters::MysqlColumn)
       ActiveRecord::ConnectionAdapters::MysqlAdapter.send(:include, RedHillConsulting::Core::ActiveRecord::ConnectionAdapters::MysqlAdapter)
     end
+    if defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) then
+      ActiveRecord::ConnectionAdapters::Mysql2Column.send(:include, RedHillConsulting::Core::ActiveRecord::ConnectionAdapters::MysqlColumn)
+      ActiveRecord::ConnectionAdapters::Mysql2Adapter.send(:include, RedHillConsulting::Core::ActiveRecord::ConnectionAdapters::MysqlAdapter)
+    end
     if defined?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) then
       ActiveRecord::ConnectionAdapters::SQLite3Adapter.send(:include, RedHillConsulting::Core::ActiveRecord::ConnectionAdapters::Sqlite3Adapter)
     end
