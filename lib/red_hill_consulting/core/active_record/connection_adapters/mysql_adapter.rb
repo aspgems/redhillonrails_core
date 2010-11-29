@@ -3,6 +3,7 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
     def self.included(base)
       base.class_eval do
         alias_method_chain :remove_column, :redhillonrails_core
+        alias_method_chain :remove_columns, :redhillonrails_core
       end
     end
 
@@ -18,12 +19,16 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
       execute "ALTER TABLE #{table_name} DROP FOREIGN KEY #{foreign_key_name}"
     end
 
-    def remove_column_with_redhillonrails_core(table_name, column_name)
-      foreign_keys(table_name).select { |foreign_key| foreign_key.column_names.include?(column_name.to_s) }.each do |foreign_key|
-        remove_foreign_key(table_name, foreign_key.name)
+    def remove_column_with_redhillonrails_core(table_name, *column_names)
+      raise ArgumentError.new("You must specify at least one column name.  Example: remove_column(:people, :first_name)") if column_names.empty?
+      column_names.flatten.each do |column_name|
+        foreign_keys(table_name).select { |foreign_key| foreign_key.column_names.include?(column_name.to_s) }.each do |foreign_key|
+          remove_foreign_key(table_name, foreign_key.name)
+        end
+        remove_column_without_redhillonrails_core(table_name, column_name)
       end
-      remove_column_without_redhillonrails_core(table_name, column_name)
     end
+    alias :remove_columns_with_redhillonrails_core :remove_column_with_redhillonrails_core
 
     def foreign_keys(table_name, name = nil)
       results = execute("SHOW CREATE TABLE `#{table_name}`", name)
