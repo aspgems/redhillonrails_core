@@ -7,7 +7,6 @@ module RedHillConsulting::Core::ActiveRecord
     module ClassMethods
       def self.extended(base)
         class << base
-          alias_method_chain :columns, :redhillonrails_core
           alias_method_chain :abstract_class?, :redhillonrails_core
         end
       end
@@ -18,20 +17,6 @@ module RedHillConsulting::Core::ActiveRecord
 
       def abstract_class_with_redhillonrails_core?
         abstract_class_without_redhillonrails_core? || !(name =~ /^Abstract/).nil?
-      end
-
-      def columns_with_redhillonrails_core
-        unless @columns
-          columns_without_redhillonrails_core
-          cols = columns_hash
-          indexes.each do |index|
-            column_name = index.columns.reverse.detect { |name| name !~ /_id$/ } || index.columns.last
-            column = cols[column_name]
-            column.case_sensitive = index.case_sensitive?
-            column.unique_scope = index.columns.reject { |name| name == column_name } if index.unique
-          end
-        end
-        @columns
       end
 
       def pluralized_table_name(table_name)

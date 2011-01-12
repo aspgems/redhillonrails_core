@@ -1,3 +1,7 @@
+[REVISION 20110112]
+
+[REMOVE] Remove unused columns monkeypatch and avoid a query to get the indexes of a table that cost so much in tables with so many records
+
 [REVISION 20080701]
 
 [FIXED] Looking up schema version fails on Rails 2.1.
