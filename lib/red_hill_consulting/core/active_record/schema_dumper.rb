@@ -23,14 +23,26 @@ module RedHillConsulting::Core::ActiveRecord
     end
 
     def indexes_with_redhillonrails_core(table, stream)
-      indexes = @connection.indexes(table)
-      indexes.each do |index|
-        stream.print "  add_index #{index.table.inspect}, #{index.columns.inspect}, :name => #{index.name.inspect}"
-        stream.print ", :unique => true" if index.unique
-        stream.print ", :case_sensitive => false" unless index.case_sensitive?
+      if (indexes = @connection.indexes(table)).any?
+        add_index_statements = indexes.map do |index|
+          statement_parts = [('add_index ' + index.table.inspect)]
+          statement_parts << index.columns.inspect
+          statement_parts << (':name => ' + index.name.inspect)
+          statement_parts << ':unique => true' if index.unique
+          # This only used in postgresql
+          statement_parts << ':case_sensitive => false' unless index.case_sensitive?
+
+          if index.respond_to?(:lengths)
+            index_lengths = index.lengths.compact if index.lengths.is_a?(Array)
+            statement_parts << (':length => ' + Hash[*index.columns.zip(index.lengths).flatten].inspect) if index_lengths.present?
+          end
+
+          '  ' + statement_parts.join(', ')
+        end
+
+        stream.puts add_index_statements.sort.join("\n")
         stream.puts
       end
-      stream.puts unless indexes.empty?
 
       foreign_keys(table, @foreign_keys)
     end
