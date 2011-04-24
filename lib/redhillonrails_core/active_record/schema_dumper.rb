@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord
+module RedhillonrailsCore::ActiveRecord
   module SchemaDumper
     def self.included(base)
       base.class_eval do
@@ -49,6 +49,11 @@ module RedHillConsulting::Core::ActiveRecord
 
     def foreign_keys(table, stream)
       foreign_keys = @connection.foreign_keys(table)
+
+      foreign_keys.sort! do |a, b|
+        a.column_names.sort <=> b.column_names.sort
+      end
+
       foreign_keys.each do |foreign_key|
         stream.print "  "
         stream.print foreign_key.to_dump

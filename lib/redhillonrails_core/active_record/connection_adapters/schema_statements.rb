@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
+module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
 	module SchemaStatements
 		def self.included(base)
 			base.module_eval do

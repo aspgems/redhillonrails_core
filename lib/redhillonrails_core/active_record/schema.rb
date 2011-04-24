@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord
+module RedhillonrailsCore::ActiveRecord
   module Schema
     def self.included(base)
       base.extend(ClassMethods)

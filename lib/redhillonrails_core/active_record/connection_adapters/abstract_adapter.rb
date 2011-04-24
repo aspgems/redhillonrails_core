@@ -1,8 +1,35 @@
-module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
+module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
   module AbstractAdapter
     def self.included(base)
       base.module_eval do
+        alias_method_chain :initialize, :redhillonrails_core
         alias_method_chain :drop_table, :redhillonrails_core
+      end
+    end
+
+    def initialize_with_redhillonrails_core(*args)
+      initialize_without_redhillonrails_core(*args)
+      adapter = nil
+      case adapter_name
+        # name of MySQL adapter depends on mysql gem
+        # * with mysql gem adapter is named MySQL
+        # * with mysql2 gem adapter is named Mysql2
+        # Here we handle this and hopefully futher adapter names
+        when /^MySQL/i
+          adapter = 'MysqlAdapter'
+        when 'PostgreSQL'
+          adapter = 'PostgresqlAdapter'
+        when 'SQLite'
+          adapter = 'Sqlite3Adapter'
+      end
+      if adapter
+        adapter_module = RedhillonrailsCore::ActiveRecord::ConnectionAdapters.const_get(adapter)
+        self.class.send(:include, adapter_module) unless self.class.include?(adapter_module)
+      end
+      # Needed from mysql2 >= 0.2.7
+      if adapter_name =~ /^Mysql2/i && defined?(ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition)
+        index_definition_module = RedhillonrailsCore::ActiveRecord::ConnectionAdapters::IndexDefinition
+        ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.send(:include, index_definition_module) unless ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.include?(index_definition_module)
       end
     end
     
@@ -42,11 +69,12 @@ module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
       reverse_foreign_keys(name).each do |foreign_key|
         begin
           remove_foreign_key(foreign_key.table_name, foreign_key.name)
-        rescue Exception
+        rescue Exception => e
+          # TODO spec this
           #there is a problem when using rollback if two tables have 
           #similar names. In that case, the plugin will try to remove a
           #non-existing column and raise an exception. I rescue the
-          #exception so the migration can proceed	
+          #exception so the migration can proceed
           nil
         end  
       end

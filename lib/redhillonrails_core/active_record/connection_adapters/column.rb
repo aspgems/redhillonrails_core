@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
+module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
 	module Column
 
 	  def required_on

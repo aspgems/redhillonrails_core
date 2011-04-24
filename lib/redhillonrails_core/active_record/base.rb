@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord
+module RedhillonrailsCore::ActiveRecord
   module Base
     def self.included(base)
       base.extend(ClassMethods)
@@ -8,6 +8,7 @@ module RedHillConsulting::Core::ActiveRecord
       def self.extended(base)
         class << base
           alias_method_chain :abstract_class?, :redhillonrails_core
+          alias_method_chain :reset_column_information, :redhillonrails_core
         end
       end
 
@@ -17,6 +18,11 @@ module RedHillConsulting::Core::ActiveRecord
 
       def abstract_class_with_redhillonrails_core?
         abstract_class_without_redhillonrails_core? || !(name =~ /^Abstract/).nil?
+      end
+
+      def reset_column_information_with_redhillonrails_core
+        reset_column_information_without_redhillonrails_core
+        @indexes = @foreign_keys = nil
       end
 
       def pluralized_table_name(table_name)

@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
+module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
 	module IndexDefinition
 		def case_sensitive?
 			@case_sensitive.nil? ? true : @case_sensitive

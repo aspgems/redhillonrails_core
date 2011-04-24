@@ -1,4 +1,4 @@
-module RedHillConsulting::Core::ActiveRecord::ConnectionAdapters
+module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
   module TableDefinition
     def self.included(base)
       base.class_eval do
