@@ -5,25 +5,28 @@ module RedhillonrailsCore
   mattr_accessor :loaded_into_rails_core
 
   module ActiveRecord
-    autoload :Base, 'redhillonrails_core/active_record/base'
-    autoload :Schema, 'redhillonrails_core/active_record/schema'
-    autoload :SchemaDumper, 'redhillonrails_core/active_record/schema_dumper'
+    extend ActiveSupport::Autoload
+
+    autoload :Base
+    autoload :Schema
+    autoload :SchemaDumper
 
     module ConnectionAdapters
-      autoload :IndexDefinition, 'redhillonrails_core/active_record/connection_adapters/index_definition'
-      autoload :TableDefinition, 'redhillonrails_core/active_record/connection_adapters/table_definition'
-      autoload :Column, 'redhillonrails_core/active_record/connection_adapters/column'
-      autoload :AbstractAdapter, 'redhillonrails_core/active_record/connection_adapters/abstract_adapter'
-      autoload :SchemaStatements, 'redhillonrails_core/active_record/connection_adapters/schema_statements'
+      extend ActiveSupport::Autoload
 
-      autoload :ForeignKeyDefinition, 'redhillonrails_core/active_record/connection_adapters/foreign_key_definition'
+      autoload_under 'abstract' do
+        autoload :IndexDefinition
+        autoload :TableDefinition
+        autoload :Column
+        autoload :ForeignKeyDefinition
+        autoload :SchemaStatements
+      end
 
-      autoload :MysqlColumn, 'redhillonrails_core/active_record/connection_adapters/mysql_column'
-
-      # Used in specs
-      autoload :PostgresqlAdapter, 'redhillonrails_core/active_record/connection_adapters/postgresql_adapter'
-      autoload :MysqlAdapter, 'redhillonrails_core/active_record/connection_adapters/mysql_adapter'
-      autoload :Sqlite3Adapter, 'redhillonrails_core/active_record/connection_adapters/sqlite3_adapter'
+      autoload :AbstractAdapter
+      autoload :PostgresqlAdapter
+      autoload :MysqlAdapter
+      autoload :MysqlColumn
+      autoload :Sqlite3Adapter
     end
   end
 
@@ -36,27 +39,6 @@ module RedhillonrailsCore
     ::ActiveRecord::ConnectionAdapters::Column.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::Column)
     ::ActiveRecord::ConnectionAdapters::AbstractAdapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::AbstractAdapter)
     ::ActiveRecord::ConnectionAdapters::SchemaStatements.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::SchemaStatements)
-
-    if defined?(ActiveRecord::ConnectionAdapters::PostgreSQLAdapter) then
-      ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::PostgresqlAdapter)
-    end
-    if defined?(ActiveRecord::ConnectionAdapters::MysqlAdapter) then
-      # TODO
-      puts "include MysqlAdapter"
-      #ActiveRecord::ConnectionAdapters::MysqlColumn.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::MysqlColumn)
-      #ActiveRecord::ConnectionAdapters::MysqlAdapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::MysqlAdapter)
-    end
-    if defined?(ActiveRecord::ConnectionAdapters::Mysql2Adapter) then
-      #ActiveRecord::ConnectionAdapters::Mysql2Column.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::MysqlColumn)
-      #ActiveRecord::ConnectionAdapters::Mysql2Adapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::MysqlAdapter)
-      if defined?(ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition) then
-        puts "include Mysql2IndexDefinition"
-        ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::IndexDefinition)
-      end
-    end
-    if defined?(ActiveRecord::ConnectionAdapters::SQLite3Adapter) then
-      #ActiveRecord::ConnectionAdapters::SQLite3Adapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::Sqlite3Adapter)
-    end
 
     self.loaded_into_rails_core = true
   end
