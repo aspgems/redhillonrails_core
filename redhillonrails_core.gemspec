@@ -4,15 +4,13 @@ require "redhillonrails_core/version"
 
 Gem::Specification.new do |s|
   s.name        = "aspgems-redhillonrails_core"
-  s.version     = RedhillonrailsCore::VERSION
+  s.version     = RedhillonrailsCore::VERSION.dup
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Michał Łomnicki", "Paco Guzmán"]
   s.email       = ["michal.lomnicki@gmail.com", "fjguzman@aspgems.com"]
   s.homepage    = "https://github.com/aspgems/redhillonrails_core"
   s.summary     = "Adds support in ActiveRecord for foreign_keys, complex indexes and other database-related stuff"
   s.description = "Adds support in ActiveRecord for foreign_keys, complex indexes and other database-related stuff. Easily create foreign_keys, complex indexes and views."
-
-  s.rubyforge_project = "redhillonrails_core"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

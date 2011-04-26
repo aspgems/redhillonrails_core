@@ -1,19 +1,28 @@
+= Disclaimer
+
+redhillonrails_core was originally created by http://github.com/harukizaemon but it was retired and is no longer supported.
+
+That fork is intended to make redhillonrails_core compatible with edge rails and introduce some new features.
+
 = RedHill on Rails Core
 
-RedHill on Rails Core is a plugin that features to support other RedHill on Rails plugins.  Those features include:
+Goal of redhillonrails_core is to provided missing ActiveRecord support for database specific features:
 
-* Creating and dropping views;
-* Creating and removing foreign-keys;
-* Obtaining indexes directly from a model class; and
-* Determining when <code>Schema.define()</code> is running.
+* foreign_keys
+* case-insensitive and partial indexes (pgsql only)
+* views
 
-=== View Support
+== Installation
 
-The plugin provides a mechanism for creating and dropping views as well as
-preserving views when performing a schema dump:
+As a gem
 
-  create_view :normal_customers, "SELECT * FROM customers WHERE status = 'normal'"
-  drop_view :normal_customers
+  gem install aspgems-redhillonrails_core
+
+== Compatibility
+
+* Ruby - 1.8, 1.9
+* ActiveRecord - 2.X, 3.X
+* Databases - PostgreSQL, MySQL, SQLite3 (most features should also run on others)
 
 === Foreign Key Support
 
@@ -106,6 +115,14 @@ configuration properties:
 * <code>config.active_record.table_name_prefix</code>
 * <code>config.active_record.table_name_suffix</code>
 
+=== View Support
+
+The plugin provides a mechanism for creating and dropping views as well as
+preserving views when performing a schema dump:
+
+  create_view :normal_customers, "SELECT * FROM customers WHERE status = 'normal'"
+  drop_view :normal_customers
+
 === Model Indexes
 
 ActiveRecord::Base already provides a method on connection for obtaining the
@@ -141,12 +158,4 @@ Note also that this ties in well with Rails built-in support for case-insensitiv
 
 === See Also
 
-* Foreign Key Associations (foreign_key_associations)
 * Foreign Key Migrations (foreign_key_migrations)
-* Row Version Migrations (row_version_migrations)
-* Schema Validations (schema_validations)
-
-=== License
-
-This plugin is copyright 2006 by RedHill Consulting, Pty. Ltd. and is released
-under the MIT license.
