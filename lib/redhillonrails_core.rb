@@ -1,4 +1,6 @@
 #require 'active_record/migration'
+require 'active_record'
+require 'active_support/dependencies/autoload'
 require 'active_support/core_ext/module/attribute_accessors'
 
 module RedhillonrailsCore

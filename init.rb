@@ -1,1 +1,1 @@
-require 'redhillonrails_core' unless defined?(RedHillConsulting::Core)
+require 'redhillonrails_core' unless defined?(RedhillonrailsCore)
