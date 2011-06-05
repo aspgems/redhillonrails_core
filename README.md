@@ -1,10 +1,12 @@
-= Disclaimer
+Disclaimer
+==========
 
 redhillonrails_core was originally created by http://github.com/harukizaemon but it was retired and is no longer supported.
 
 That fork is intended to make redhillonrails_core compatible with edge rails and introduce some new features.
 
-= RedHill on Rails Core
+RedHill on Rails Core
+=====================
 
 Goal of redhillonrails_core is to provided missing ActiveRecord support for database specific features:
 
@@ -12,19 +14,22 @@ Goal of redhillonrails_core is to provided missing ActiveRecord support for data
 * case-insensitive and partial indexes (pgsql only)
 * views
 
-== Installation
+Installation
+------------
 
 As a gem
 
   gem install aspgems-redhillonrails_core
 
-== Compatibility
+Compatibility
+-------------
 
 * Ruby - 1.8, 1.9
 * ActiveRecord - 2.X, 3.X
 * Databases - PostgreSQL, MySQL, SQLite3 (most features should also run on others)
 
-=== Foreign Key Support
+Foreign Key Support
+-------------------
 
 The plugin provides two mechanisms for adding foreign keys as well as
 preserving foreign keys when performing a schema dump. (Using SQL-92 syntax and
@@ -137,7 +142,8 @@ configuration properties:
 * <code>config.active_record.table_name_prefix</code>
 * <code>config.active_record.table_name_suffix</code>
 
-=== View Support
+View Support
+------------
 
 The plugin provides a mechanism for creating and dropping views as well as
 preserving views when performing a schema dump:
@@ -147,7 +153,8 @@ preserving views when performing a schema dump:
   drop_view :normal_customers
 ```
 
-=== Model Indexes
+Model Indexes
+-------------
 
 ActiveRecord::Base already provides a method on connection for obtaining the
 indexes for a given table. This plugin now makes it possible to obtain the
@@ -159,13 +166,15 @@ indexes for a given model--<code>ActiveRecord::Base</code>--class. For example:
 
 Would return all the indexes for the +invoices+ table.
 
-=== Schema Defining
+Schema Defining
+---------------
 
 The plugin also adds a method--<code>defining?()</code>--to
 <code>ActiveRecord::Schema</code> to indicate when <code>define()</code> is running. This is necessary
 as some migration plugins must change their behaviour accordingly.
 
-=== Case-insensitive Indexes
+Case-insensitive Indexes
+------------------------
 
 For PostgreSQL, you can add an option <code>:case_sensitive => false</code> to <code>add_index</code>
 which will generate an expression index of the form:
@@ -184,6 +193,7 @@ Note also that this ties in well with Rails built-in support for case-insensitiv
   validates_uniqueness_of :name, :case_sensitive => false
 ```
 
-=== See Also
+See Also
+--------
 
 * Foreign Key Migrations (foreign_key_migrations)
