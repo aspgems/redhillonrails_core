@@ -34,36 +34,48 @@ constraints.)
 The first mechanism for creating foreign-keys allows you to add a foreign key
 when defining a table. For example:
 
+```ruby
   create_table :orders do |t|
     ...
     t.foreign_key :customer_id, :customers, :id
   end
+```
 
 You also have the option of specifying what to do on delete/update using
 <code>:on_delete</code>/<code>:on_update</code>, respectively to one of: <code>:cascade</code>; <code>:restrict</code>; and <code>:set_null</code>:
 
+```ruby
   create_table :orders do |t|
     ...
     t.foreign_key :customer_id, :customers, :id, :on_delete => :set_null, :on_update => :cascade
   end
+```
 
 The second method allows you to create arbitrary foreign-keys at any time:
 
+```ruby
   add_foreign_key(:orders, :customer_id, :customers, :id, :on_delete => :set_null, :on_update => :cascade)
+```
 
 In either case, if your database supports deferred foreign keys (for example PostgreSQL) you can specify this as well:
 
+```ruby
   t.foreign_key :customer_id, :customers, :id, :deferrable => true
   add_foreign_key(:orders, :customer_id, :customers, :id, :deferrable => true)
+```
 
 By default, the foreign key will be assigned a name by the underlying database. However, if this doesn't suit
 your needs, you can override the default assignment using the <code>:name</code> option:
 
+```ruby
   add_foreign_key(:orders, :customer_id, :customers, :id, :on_delete => :set_null, :on_update => :cascade, <strong>:name => :orders_customer_id_foreign_key<strong>)
+```
 
 You can also query the foreign keys for a model yourself by calling <code>foreign_keys()</code>:
 
+```ruby
   Order.foreign_keys
+```
 
 Or for an arbitrary table by calling <code>foreign_keys(table_name)</code> on a database adapter.
 
@@ -77,7 +89,9 @@ Either method returns an array of the following meta-data:
 
 If you need to drop a foreign-key, use:
 
+```ruby
   remove_foreign_key :orders, :orders_ordered_by_id_fkey
+```
 
 The plugin also ensures that all foreign keys are output when performing a
 schema dump. This happens automatically when running <code>rake migrate</code> or
@@ -85,24 +99,32 @@ schema dump. This happens automatically when running <code>rake migrate</code> o
 unit tests that contain fixtures. To ensure the test data is correctly reset after
 each test, you should list your fixtures in order of parent->child. For example:
 
+```ruby
   fixtures :customers, :products, :orders, :order_lines
+```
 
 Rails will then set-up and tear-down the fixtures in the correct sequence.
 
 Some databases (PostgreSQL and MySQL for example) allow you to set a comment for a
 table. You can do this for existing tables by using:
 
+```ruby
   set_table_comment :orders, "All pending and processed orders"
+```
 
 or even at the time of creation:
 
+```ruby
   create_table :orders, :comment => "All pending and processed orders" do |t|
     ...
   end
+```
 
 You can clear table comments using:
 
+```ruby
   clear_table_comment :orders
+```
 
 There is also a rake tasks to show all database tables and their comments:
 
@@ -120,8 +142,10 @@ configuration properties:
 The plugin provides a mechanism for creating and dropping views as well as
 preserving views when performing a schema dump:
 
+```ruby
   create_view :normal_customers, "SELECT * FROM customers WHERE status = 'normal'"
   drop_view :normal_customers
+```
 
 === Model Indexes
 
@@ -129,7 +153,9 @@ ActiveRecord::Base already provides a method on connection for obtaining the
 indexes for a given table. This plugin now makes it possible to obtain the
 indexes for a given model--<code>ActiveRecord::Base</code>--class. For example:
 
+```ruby
   Invoice.indexes
+```
 
 Would return all the indexes for the +invoices+ table.
 
@@ -154,7 +180,9 @@ are able to use the indexes rather require, in the worst case, full-table scans.
 
 Note also that this ties in well with Rails built-in support for case-insensitive searching:
 
+```ruby
   validates_uniqueness_of :name, :case_sensitive => false
+```
 
 === See Also
 
