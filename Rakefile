@@ -1,4 +1,24 @@
-require 'bundler'
+require 'pathname'
+ENV["BUNDLE_GEMFILE"] ||= begin
+                            version = if File.exist?("./.gemfile")
+                                        File.read("./.gemfile").chomp
+                                      else
+                                        "rails-3.0.7"
+                                      end
+                            File.expand_path("../gemfiles/#{version}", __FILE__)
+                          end
+puts "Using gemfile: #{ENV["BUNDLE_GEMFILE"].gsub(Pathname.new(__FILE__).dirname.to_s,'').sub(/^\//,'')}"
+require "bundler"
+begin
+  Bundler.setup
+rescue
+  if ENV["CI"]
+    sh "bundle install"
+    Bundler.setup
+  else
+    raise "You need to install a bundle first. Try 'thor gemfile:use 3.0.7'"
+  end
+end
 Bundler::GemHelper.install_tasks
 
 require 'rspec/core/rake_task'
@@ -16,8 +36,6 @@ task :spec do
     Rake::Task["#{adapter}:spec"].invoke
   end
 end
-
-task :default => :spec
 
 namespace :postgresql do
   desc 'Build the PostgreSQL test databases'
@@ -57,3 +75,12 @@ end
 task :build_mysql_databases => 'mysql:build_databases'
 task :drop_mysql_databases => 'mysql:drop_databases'
 task :rebuild_mysql_databases => 'mysql:rebuild_databases'
+
+desc 'clobber generated files'
+task :clobber do
+  rm_rf "pkg"
+  rm_rf "tmp"
+  rm    "Gemfile.lock" if File.exist?("Gemfile.lock")
+end
+
+task :default => :spec

@@ -1,2 +1,8 @@
 pkg
 debug.log
+Gemfile.lock
+gemfiles/*.lock
+gemfiles/bin/*
+bin
+.gemfile
+*.db
