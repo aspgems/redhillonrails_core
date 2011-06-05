@@ -9,6 +9,12 @@ module RedhillonrailsCore
   module ActiveRecord
     extend ActiveSupport::Autoload
 
+    module Migration
+      extend ActiveSupport::Autoload
+
+      autoload :CommandRecorder
+    end
+
     autoload :Base
     autoload :Schema
     autoload :SchemaDumper
@@ -41,6 +47,12 @@ module RedhillonrailsCore
     ::ActiveRecord::ConnectionAdapters::Column.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::Column)
     ::ActiveRecord::ConnectionAdapters::AbstractAdapter.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::AbstractAdapter)
     ::ActiveRecord::ConnectionAdapters::SchemaStatements.send(:include, RedhillonrailsCore::ActiveRecord::ConnectionAdapters::SchemaStatements)
+
+    if defined?(::ActiveRecord::Migration::CommandRecorder)
+      ::ActiveRecord::Migration::CommandRecorder.class_eval do
+        include RedhillonrailsCore::ActiveRecord::Migration::CommandRecorder
+      end
+    end
 
     self.loaded_into_rails_core = true
   end
