@@ -3,8 +3,8 @@ module GemfileBase
     host.instance_eval do
       source "http://rubygems.org"
 
-      gem 'rake', '0.9.1'
-      gem 'rspec', '~> 2.5.0'
+      gem 'rake', '0.9.2'
+      gem 'rspec', '~> 2.6.0'
     end
   end
 end

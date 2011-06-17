@@ -21,14 +21,11 @@ The `thor rails:use` task accepts any released version of rails, or either the
 3-0-stable or master branches.
 
     thor gemfile:use master
+    thor gemfile:use 3.1.0.rc1
     thor gemfile:use 3-0-stable
-    thor gemfile:use 3.0.6
-    thor gemfile:use 3.0.5
-    thor gemfile:use 3.0.4
-    thor gemfile:use 3.0.3
-    thor gemfile:use 3.0.2
-    thor gemfile:use 3.0.1
-    thor gemfile:use 3.0.0
+    thor gemfile:use 3.0.9
+    thor gemfile:use 3.0.8
+    thor gemfile:use 3.0.7
 
 It then does several things:
 

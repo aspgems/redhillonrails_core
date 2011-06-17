@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency("activesupport", ">= 2")
 
   # Development dependencies through thorfile
-  s.add_development_dependency("rspec", "~> 2.5.0")
+  s.add_development_dependency("rspec", "~> 2.6.0")
   s.add_development_dependency("pg")
   s.add_development_dependency("mysql")
   s.add_development_dependency("mysql2")
