@@ -61,10 +61,9 @@ describe "Schema dump" do
     with_index Post, :user_id do
       with_index Post, :author_id do
         index_defs = dump.split("\n").select { |x| x.match(/add_index/) }
-        index_defs.size.should be_equal(3)
+        index_defs.size.should be_equal(2)
         index_defs[0].should match(to_regexp(%q{add_index "posts", ["author_id"]}))
         index_defs[1].should match(to_regexp(%q{add_index "posts", ["user_id"]}))
-        index_defs[2].should match(to_regexp(%q{add_index "votes", ["user_id"]}))
       end
     end
   end
