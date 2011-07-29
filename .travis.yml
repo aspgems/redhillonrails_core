@@ -1,5 +1,8 @@
-script: "gemfiles/bin/rake --trace 2>&1"
-bundler_args: "--binstubs --without development"
+script: "rake --trace 2>&1"
+script: "bundle exec rake build_databases spec"
+
+
+bundler_args: "--without development"
 rvm:
   - 1.8.7
   - 1.9.2
