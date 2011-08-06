@@ -2,6 +2,7 @@ pkg
 debug.log
 Gemfile.lock
 gemfiles/bin/*
+gemfiles/vendor/*
 bin
 .gemfile
 *.db
