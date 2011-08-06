@@ -1,4 +1,4 @@
-https://secure.travis-ci.org/aspgems/redhillonrails_core.png
+[![Build Status](https://secure.travis-ci.org/aspgems/redhillonrails_core.png)](http://travis-ci.org/aspgems/redhillonrails_core)
 
 Disclaimer
 ==========
