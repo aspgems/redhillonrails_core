@@ -69,7 +69,7 @@ module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
       foreign_keys = []
 
       results.each do |row|
-        next unless table_name.casecmp(row[3]) == 0
+        next unless table_name.to_s.casecmp(row[3].to_s) == 0
         if current_foreign_key != row[0]
           foreign_keys << ForeignKeyDefinition.new(row[0], row[1], [], row[3], [])
           current_foreign_key = row[0]
