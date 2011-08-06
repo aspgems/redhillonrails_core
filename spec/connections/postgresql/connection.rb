@@ -4,12 +4,13 @@ require 'logger'
 ActiveRecord::Base.logger = Logger.new("debug.log")
 
 ActiveRecord::Base.configurations = {
-  'redhillonrails' => {
+  'postgres' => {
     :adapter => 'postgresql',
-    :database => 'redhillonrails_core_test',
+    :database => 'redhillonrails_core',
+    :username => 'postgres',
     :min_messages => 'warning'
   }
 
 }
 
-ActiveRecord::Base.establish_connection 'redhillonrails'
+ActiveRecord::Base.establish_connection 'postgres'

@@ -50,7 +50,8 @@ end
 namespace :postgresql do
   desc 'Build the PostgreSQL test databases'
   task :build_databases do
-    %x( createdb -E UTF8 rh_core_unittest )
+    system "psql -c 'create database redhillonrails_core;' -U postgres >/dev/null"
+    abort "failed to create postgres database" unless $?.success?
   end
 
   desc 'Drop the PostgreSQL test databases'
@@ -65,12 +66,13 @@ end
 namespace :mysql do
   desc 'Build the MySQL test databases'
   task :build_databases do
-    %x( echo "create DATABASE rh_core_unittest DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci " | mysql --user=rh_core)
+    system "mysql -e 'create database redhillonrails_core default character set utf8 default collate utf8_unicode_ci;' >/dev/null"
+    abort "failed to create mysql database" unless $?.success?
   end
 
   desc 'Drop the MySQL test databases'
   task :drop_databases do
-    %x( mysqladmin --user=rh_core -f drop rh_core_unittest )
+    %x( mysqladmin -f drop redhillonrails_core )
   end
 
   desc 'Rebuild the MySQL test databases'

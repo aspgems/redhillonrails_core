@@ -4,11 +4,12 @@ require 'logger'
 ActiveRecord::Base.logger = Logger.new("debug.log")
 
 ActiveRecord::Base.configurations = {
-  'redhillonrails' => {
+  'sqlite3' => {
     :adapter => 'sqlite3',
-    :database => File.expand_path(File.dirname(__FILE__) + 'redhillonrails_core.db')
+    :database => ':memory:',
+    :timeout => 500
   }
 
 }
 
-ActiveRecord::Base.establish_connection 'redhillonrails'
+ActiveRecord::Base.establish_connection 'sqlite3'

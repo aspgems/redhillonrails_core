@@ -4,15 +4,13 @@ require 'logger'
 ActiveRecord::Base.logger = Logger.new("debug.log")
 
 ActiveRecord::Base.configurations = {
-  'redhillonrails' => {
+  'mysql' => {
     :adapter => 'mysql',
-    :database => 'rh_core_unittest',
-    :username => 'rh_core',
+    :database => 'redhillonrails_core',
+    :username => 'redhillonrails',
     :encoding => 'utf8',
-    :socket => '/var/run/mysqld/mysqld.sock',
-    :min_messages => 'warning'
   }
 
 }
 
-ActiveRecord::Base.establish_connection 'redhillonrails'
+ActiveRecord::Base.establish_connection 'mysql'
