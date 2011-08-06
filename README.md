@@ -1,3 +1,5 @@
+https://secure.travis-ci.org/aspgems/redhillonrails_core.png
+
 Disclaimer
 ==========
 
