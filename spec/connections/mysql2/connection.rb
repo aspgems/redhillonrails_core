@@ -7,7 +7,7 @@ ActiveRecord::Base.configurations = {
   'mysql2' => {
     :adapter => 'mysql2',
     :database => 'redhillonrails_core',
-    :username => 'redhillonrails',
+    :username => (ENV["TRAVIS"] ? '' : 'redhillonrails'),
     :encoding => 'utf8',
   }
 
