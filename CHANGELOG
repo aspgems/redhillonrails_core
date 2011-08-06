@@ -1,3 +1,6 @@
+2.0.0.beta4
+    * To fix version number released
+
 2.0.0.beta3
     * postgresql specs pass again
     * compatibility with mysql 0.2.X line
