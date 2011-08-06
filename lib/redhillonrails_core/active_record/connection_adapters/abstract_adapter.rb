@@ -26,10 +26,14 @@ module RedhillonrailsCore::ActiveRecord::ConnectionAdapters
         adapter_module = RedhillonrailsCore::ActiveRecord::ConnectionAdapters.const_get(adapter)
         self.class.send(:include, adapter_module) unless self.class.include?(adapter_module)
       end
-      # Needed from mysql2 >= 0.2.7
+      # Mysql2 gem adds own Mysql2IndexDefinition in versions from 0.2.7 to 0.2.11.
+      # We must include RedhillonrailsCore IndexDefinition to support case sensitivness.
+      # 0.3 line of mysql2 removes it again so hopefully we'll remove that obsure piece of code too.
       if adapter_name =~ /^Mysql2/i && defined?(ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition)
         index_definition_module = RedhillonrailsCore::ActiveRecord::ConnectionAdapters::IndexDefinition
-        ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.send(:include, index_definition_module) unless ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.include?(index_definition_module)
+        unless ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.include?(index_definition_module)
+          ActiveRecord::ConnectionAdapters::Mysql2IndexDefinition.send(:include, index_definition_module)
+        end
       end
     end
     
