@@ -25,12 +25,24 @@ module RedhillonrailsCore::ActiveRecord
     def indexes_with_redhillonrails_core(table, stream)
       if (indexes = @connection.indexes(table)).any?
         add_index_statements = indexes.map do |index|
-          statement_parts = [('add_index ' + index.table.inspect)]
-          statement_parts << index.columns.inspect
-          statement_parts << (':name => ' + index.name.inspect)
-          statement_parts << ':unique => true' if index.unique
-          # This only used in postgresql
-          statement_parts << ':case_sensitive => false' unless index.case_sensitive?
+
+          if index.columns.any?
+            statement_parts = [('add_index ' + index.table.inspect)]
+            statement_parts << index.columns.inspect
+            statement_parts << (':name => ' + index.name.inspect)
+            statement_parts << ':unique => true' if index.unique
+            # This only used in postgresql - :case_sensitive, :conditions, :kind, :expression
+            statement_parts << ':case_sensitive => false' unless index.case_sensitive?
+            statement_parts << ':conditions => ' + index.conditions.inspect unless index.conditions.blank?
+            statement_parts << ':kind => ' + index.kind.inspect unless index.kind.blank?
+            statement_parts << ':expression => ' + index.expression.inspect unless index.expression.blank?
+          else
+            # This only used in postgresql - :case_sensitive, :conditions, :kind, :expression
+            statement_parts = [('add_index ' + index.table.inspect)]
+            statement_parts << (':name => ' + index.name.inspect)
+            statement_parts << ':kind => ' + index.kind.inspect unless index.kind.blank?
+            statement_parts << ':expression => ' + index.expression.inspect unless index.expression.blank?
+          end
 
           if index.respond_to?(:lengths)
             index_lengths = index.lengths.compact if index.lengths.is_a?(Array)
